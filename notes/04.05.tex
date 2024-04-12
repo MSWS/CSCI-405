@@ -1,0 +1,120 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{geometry}[margin=1in]
+
+\begin{document}
+\textbf{Review}: Selection problem.
+
+What about the median?
+
+\begin{itemize}
+    \item By repeatedly applying the algorithm for finding the min value, it will take \(O(i \cdot n)\) time to find the $i$-th smallest element.
+    \item Therefore, when applied to finding median, it will take \(O(n^2)\) time. (More than sorting)
+    \item Is there an algorithm that can find the median better than \(O(n^2)\)
+\end{itemize}
+
+\subsection*{Reduction to Sorting}
+\begin{itemize}
+    \item \(O(n \log n)\) Algorithm
+    \item Apply merge sort
+    \item Return $i$-th element
+\end{itemize}
+
+But sorting is \textit{like using a cannon to shoot a fly}
+
+\subsection*{Quick Sort}
+Pivot, pivot, pivot!
+
+\begin{description}
+    \item[Worst Case:] \(O(n^2)\)
+    \item[Best Case:] \(O(n \log n)\)
+\end{description}
+
+\subsection*{Randomized partition for selection}
+Suppose we are looking for the 5th order statistic (5th smallest number) in an
+input array of length 10. We partition the array, and the pivot winds up in the
+3rd position of the array. On which side of the pivot do we recurse, and what
+order statistic should we look for?
+
+\begin{enumerate}[label=\Alph*:]
+    \item The 3rd order statistic on the left
+    \item $\star$ The 2nd order statistic on the right
+    \item The 5th order statistic on the right
+    \item Not enough info
+\end{enumerate}
+
+\subsection*{Randomized Selection}
+
+The major difference between Quick Sort and Randomized Selection
+is the problem they solve.
+
+\begin{itemize}
+    \item Quick Sort Avg: \(n \log n\)
+    \item Randomized Select Avg: \(n\)
+\end{itemize}
+
+You can imagine Randomized Selection as QuickSort with early stopping.
+
+What is the running time of the \texttt{Randomized-Select} algorithm if pivots are always chosen in the worst possible way?
+
+\begin{enumerate}[label=\Alph*:]
+    \item \(\Theta(n)\)
+    \item \(\Theta(n \log n)\)
+    \item \(\star \Theta(n^2)\)
+    \item \(\Theta(2^n)\)
+\end{enumerate}
+
+\subsubsection*{Worst case running time}
+\begin{itemize}
+    \item If we always partition around the largest/smallest remaining element
+    \item Partition takes \(\Theta(n)\) time
+    \item \(T(n) = O(1)\) (choose pivot) \(+ \Theta(n)\) (partition) \(+ T(n-1)\)
+\end{itemize}
+\begin{equation*}
+    = 1 + n + T(n-1) = \Theta(n^2)
+\end{equation*}
+
+\subsection*{RSelect Theorem}
+For every input array of length $n$, the \textbf{average} running time of
+RSelect is \(O(n)\).
+
+\begin{itemize}
+    \item holds for every input
+    \item `average' is over random pivot choices made by the algorithm
+\end{itemize}
+
+\subsection*{Proof I}
+Note: RSelect uses \(\leq cn\) (for some constant \(c > 0\)) operations outside
+of the recursive call [from partitioning]
+
+Notation: RSelect is in Phase $j$ if currrent array size between \(\left(
+\frac{3}{4} \right) ^{j+1} n\) and \(\left( \frac{3}{4} \right) ^j n\). \\
+** Depending on the choice of the pivot, you may (or may not) get out of phase
+
+\(X_j = \) number of recursive calls during phase $j$
+
+\begin{equation*}
+    \text{Running time of RSelect} \leq \sum_{\text{Phase } j} X_j \cdot c \cdot \left( \frac{3}{4} \right) ^j n
+\end{equation*}
+
+\subsection*{Proof II}
+\begin{equation*}
+    X_j = \text{number of recursive calls during phase } j (\text{size between }) \left( \frac{3}{4} \right) ^{j+1} n \text{ and } \left( \frac{3}{4} \right) ^j n
+\end{equation*}
+
+Note (sufficient condition): if RSelect chooses a pivot giving a 25-75 (or better) $\rightarrow$ the current phase ends! (new subarray length at 75\% of old length)
+
+Recall: probability of 25-75 split of better is 50\%
+
+So: \(E[X_j] \leq \) expected number of times you need to flip a fair coin to get one `head'
+
+`head' $\rightarrow$ `good pivot' $\rightarrow$ `enter next phase' \\
+`tail' $\rightarrow$ `bad pivot' $\rightarrow$ `stay in current phase'
+
+\subsection*{Proof III}
+Let N = number of coin flips until you get heads
+
+\subsubsection*{Bernoulli Trial:}
+\end{document}

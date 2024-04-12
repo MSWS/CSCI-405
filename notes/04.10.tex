@@ -1,0 +1,172 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+
+\newenvironment{rcases}
+  {\left.\begin{aligned}}
+  {\end{aligned}\right\rbrace}
+
+\begin{document}
+\section*{Review}
+\subsection*{The DSelect Algorithm}
+
+Elements that are $>$ or \(< m\)
+\begin{equation*}
+    3 \left( \lceil \frac{1}{2} \lceil \frac{n}{5} \rceil \rceil - 2\right) \geq \frac{3n}{10} - 6
+\end{equation*}
+
+Thus, the \emph{upper bound} of the number of elements we put into the recursive call:
+\begin{equation*}
+    n - \left(\frac{3n}{10} - 6\right) = \frac{7n}{10} + 6
+\end{equation*}
+
+\subsection*{Recurrence}
+With this in mind, our recursion complexity looks along the lines of
+\begin{equation*}
+    T(N) =
+    \begin{cases}
+        1, N = 1 \\
+        T(n) \leq cn + T \left( \frac{n}{5}\right) + T \left( \frac{7n}{10}\right)
+    \end{cases}
+\end{equation*}
+
+\subsection*{Hope and Check}
+Hope: There is some constant a [independent of a] such that \(T(n) \leq an, \forall n \geq 1\)
+If true, \(T(n) = O(n)\)
+
+\subsection*{Analysis}
+\begin{description}
+    \item[Claim:]  Let \(a = 10c\), then \(T(n) \leq an, \forall n \geq 1\)
+    \item[Proof:] By induction on n.
+    \item[Base Case:] \(T(1) = 1 \leq a \times 1 (n = 1, \text{, since } a \geq 1)\)
+    \item[Induction Step:] \(n > 1\)
+\end{description}
+
+\begin{equation*}
+    \text{Induction Hypotheseis: } T(k) \leq a\times k, \text{ for } k < n
+\end{equation*}
+
+\begin{align*}
+    \text{We have } T(n) & \leq cn + T(n/5) + T(\frac{7n}{10})               \\
+                         & \leq cn + a(n/5) + a \left( \frac{7n}{10} \right) \\
+                         & = n(c + \frac{9a}{10}) = an
+\end{align*}
+
+\section*{Dynamic Programming}
+Dynamic programming is a method for designing efficient algorithms for
+recursively solvable problems with the following properties:
+
+\begin{enumerate}
+    \item Optimal Substructure: An optimal solution to an instance contains an
+          optimal solution to its sub-instances
+    \item Overlapping Subproblems: The number of subproblems is small so during
+          the recursion same instances are referred to over and over again.
+\end{enumerate}
+
+\emph{Basically fancy recursion}
+
+Four steps in solving a problem using dynamic programming:
+\begin{enumerate}
+    \item Characterize the structure
+    \item Recursively define the value of a solution
+    \item
+\end{enumerate}
+
+A more refined / intuitive list: \footnote{Recursion + memorization}
+\begin{enumerate}
+    \item Define subproblems
+    \item Write down the recurrence that relates the subproblems
+    \item Recognize and solve the best cases
+\end{enumerate}
+
+\subsection*{Fibonacci}
+Sequence: \(1, 1, 2, 3, 5, 8, 13, \ldots\)
+
+\subsubsection*{Naive Recursion Approach}
+\begin{verbatim}
+def fib(n):
+    if n <= 2:
+        return 1
+    return fib(n - 1) + fib(n - 2)
+\end{verbatim}
+
+\subsubsection*{Runtime} \(O(2^n)\)
+We calculate the same value multiple times.
+
+\begin{equation*}
+    T(n) = T(n - 1) + T(n - 2) + 2
+\end{equation*}
+
+\subsubsection*{Memoized DP Approach}
+\begin{verbatim}
+memo = {}
+def fib(n):
+    if n in memo: return memo[n]
+    if n <= 2:
+        f = 1
+    else
+        f = fib(n - 1) + fib(n - 2)
+    memo[n] = f
+    return f
+\end{verbatim}
+
+\subsubsection*{Bottom-Up DP Approach}
+\begin{verbatim}
+fib = {}
+for k in range(n):
+    if k <= 2:
+        f = 1
+    else:
+        f = fib[n - 1] + fib[n-2]
+    fib[k] = f
+return fib[n]
+\end{verbatim}
+
+\subsection*{Coin Change}
+Given $n$, find the number of different ways to write $n$ as the sum of \(1, 3,
+4\)
+
+Example: \(n = 5\)
+\begin{align*}
+    5 & = 1+ 1 + 1 + 1 + 1 \\
+      & = 1 + 1 + 3        \\
+      & = 1 + 3 + 1        \\
+      & = 3 + 1 + 1        \\
+      & = 1 + 4            \\
+      & = 4 + 1
+\end{align*}
+\begin{equation*}
+    \begin{aligned}
+        \begin{rcases}
+            5 & = 1 + 1 + 1 + 1+ 1 \\
+              & = 3 + 1 + 1        \\
+              & = 1 + 3 + 1        \\
+              & = 4 + 1            \\
+        \end{rcases}  D_4 \\
+        = 1 + 1 + 3
+    \end{aligned}
+\end{equation*}
+
+
+\subsubsection*{Define Subproblems}
+\begin{equation*}
+    \text{Let} D_n \text{ be the number of ways to write} n \text{ as the sum of } 1, 3, 4
+\end{equation*}
+
+\subsubsection*{Find the recurrence}
+\begin{enumerate}
+    \item Consider one possible solution \(n = x_1 + x_2 + \cdot + x_m\)
+    \item If \(x_m = 1\), the rest of the terms must sum to \(n - 1\)
+    \item Thus, the number of sums that end with \(x_m = 1\) is equal to \(D_{n-1}\)
+    \item Take other cases into account \((x_m = 3, x_m = 4)\)
+\end{enumerate}
+
+\begin{equation*}
+    D_n = D_{n-1} + D_{n-3} + D_{n-4}
+\end{equation*}
+
+\subsubsection*{Base Cases}
+\begin{align*}
+    D_0 & = 1 & D_1 & = 1
+\end{align*}
+\end{document}

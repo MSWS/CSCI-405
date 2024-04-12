@@ -1,0 +1,121 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+
+\newcommand{\runtimeselect}{\sum_{\text{Phase}_j}X_j \cdot c \cdot \left( \frac{3}{4} \right) ^ j n}
+
+\begin{document}
+\section*{Review}
+$I$-th order statistic $\rightarrow$ selection problem.
+
+Divice and Conquer (recursion)
+
+\begin{description}
+    \item[Worst Case:]  If we always partition around the largest/smallest remaining element.
+        \begin{equation*}
+            T(n) = \underbrace{O(1)}_{\text{Choose the pivot}} + \underbrace{\Theta(n)}_{\text{Partition}} + T(n-1)
+        \end{equation*}
+\end{description}
+
+If RSelect randomly chooses a `good pivot' giving at least a 25-75 split, it can be good enough for \(O(n)\) runtime.
+
+\textbf{What is 25-75?} A split that separates the array into two parts, one of which is at least 25\% of the size of the original array.
+
+\subsection*{Phases}
+\begin{equation*}
+    \text{RSelect is in Phase } j \text{ if current array size is between } \left( \frac{3}{4} \right) ^ {j+1} n \text{ and } \left( \frac{3}{4} \right) ^ j n
+\end{equation*}
+
+Note that we will be starting from Phase 0, as we need to initially look at the entire array.
+Thus:
+\begin{align*}
+    \left( \frac{3}{4} \right) ^ {0+1} n = \frac{3}{4}n \\
+    \left( \frac{3}{4} \right) ^ {0} n = n
+\end{align*}
+
+Vs starting from Phase 1:
+\begin{align*}
+    \left( \frac{3}{4} \right) ^ {1+1} n = \frac{9}{16}n \\
+    \left( \frac{3}{4} \right) ^ {1} n = \frac{3}{4}n
+\end{align*}
+
+Logically, the \# of recursive calls in Phase 0 is 2.
+
+To reiterate,
+
+\begin{equation*}
+    \text{Running time of RSelect} \leq \runtimeselect
+\end{equation*}
+
+\begin{enumerate}
+    \item Phase 0: array size between \(\rightarrow n \text{ and } \frac{3}{4}n\)
+\end{enumerate}
+
+\textbf{Why 25-75?} Why not 20-80? \\
+We could use any range, but using a 25-75 gives us an easy way to compare to flipping coins (50\% chance).
+
+\subsection*{Bernoulli Trial}
+An experiment with only two outcomes: success with probability $p$, and failrue, with probability \(q = 1 - p\).
+
+\begin{equation*}
+    E[N] = \frac{1}{p} = 2\ (\text{Recall } E[X_j] \leq E[N])
+\end{equation*}
+
+Examples
+\begin{itemize}
+    \item Pulling a specific card out of a deck of cards
+    \item Flipping a coin
+    \item Winning Rock Paper Scissors
+\end{itemize}
+
+\begin{align*}
+    \text{E[\text{Running Select}]} & \leq E \left[ \runtimeselect \right]                          \\
+                                    & = cn \sum_{\text{Phase} j} \left( \frac{3}{4}\right)^j E[X_j] \\
+                                    & = 2n \sum_{\text{Phase}_j} \left( \frac{3}{4}\right)^j        \\
+                                    & \leq 8cn = O(n)
+\end{align*}
+
+\subsection*{Guaranteeing a 25-75 Split}
+\begin{itemize}
+    \item What is a good pivot? A balanced split
+    \item `Best' pivot? Median
+    \item We need a method to deterministally find a good approxmiation of the median.
+\end{itemize}
+
+% We're using a deterministic approach, here's how we find the median:
+\textbf{Key Idea:} Median of medians.
+
+\subsection*{Deterministic Choose Pivot}
+\begin{enumerate}
+    \item Divide elements into groups of five; last group may have fewer than five elements.
+    \item Sort each group (eg. using MergeSort)
+    \item Copy \(n/5\) medians into new array $C$.
+    \item Make recursive call to get the median of $C$.
+    \item Use this median as the pivot.
+    \item If the pivot is not the order statistic that is searched for, recurse on the sub-array that contains it.
+\end{enumerate}
+
+\begin{verbatim}
+DSelect(array A, length n, order statistic i)
+    Break A into groups of 5, sort each gruop
+    C = the n/5 `middle elements'
+    p = DSelect(C, n/5, n/10)
+    Partition A around p
+    if j = 1 return p
+    if j < i return DSelect(1st part of A, j-1, i)
+    return DSelect(2nd part of A, n-j, i-j)
+\end{verbatim}
+
+\textbf{What's the running time of step 1 of this algorithm?}
+\begin{enumerate}
+    \item \(\Theta(1)\)
+    \item \(\Theta(n \log n)\)
+    \item \(\star\ \Theta(n)\)
+    \item  \(\Theta(\log n^n)\)
+\end{enumerate}
+
+Lemma: For every input array of $n$ numbers, Merge Sort produces a sorted output array and at most \(6n \log_2 n + 6n\) operations.
+\begin{equation*}
+    6n \log_2 n + 6n = 30 \log_2 5 + 30 \leq 120
+\end{equation*}
+\end{document}

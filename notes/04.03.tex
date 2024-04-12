@@ -1,0 +1,106 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+\section*{Maximum and Minimum}
+The \textbf{selection problem} is the problem of computing the $i$-th order
+statistic (i.e. the $i$-th smallest number) of a set $A$.
+
+Special Cases:
+\begin{itemize}
+    \item Min ($i = 1$)
+    \item Max ($i = n$)
+    \item Median ($i = n/2$)
+\end{itemize}
+
+\subsection*{Order Statistics}
+How many comparisons are necessary and sufficient for computing both the min and max?
+
+\begin{description}
+    \item[Necessary:] you cannot find it with fewer comparisons
+    \item[Sufficient:] no more comparisons are needed
+\end{description}
+
+\begin{itemize}
+    \item Compute the max: $n - 1$ comparisons
+    \item Compute the min: $n - 1$ comparisons
+    \item Thus, computing both min \& max requires $2n - 2$ comparisons
+\end{itemize}
+
+\textbf{Is there a way to improve this?}
+
+\subsection*{Idea}
+Maintain the variables min and max. Process the $n$ numbers in pairs.
+
+Operation:
+\begin{itemize}
+    \item Form pairs of elements
+    \item Compare elements in each pair
+\end{itemize}
+
+\subsection*{Initial Values}
+\begin{description}
+    \item[$n$ is odd] set both min and max to the first elements
+    \item[$n$ is even] compare first two elements, assign smallest to min and largest to max
+\end{description}
+
+
+Total \# of comparisons:
+\begin{description}
+    \item[n is od] $3(n-1)/2$
+    \item [n is even] $1 + 3(n-2)/2 = 3n/2 - 2 $
+\end{description}
+
+\subsection*{Odd Example}
+n = 5(odd), array $A = {2, 7, 1, 3, 14}$
+
+\begin{enumerate}
+    \item Set min = max = 2
+    \item Compare elements in pairs \begin{itemize}
+              \item $1 < 7 \implies $ compare 1 with min and 7 with max
+              \item $3 < 5 \implies$ compare 3 with min and 4 with max
+          \end{itemize}
+          We performed $3(n-1)/2 = 6$ comparisons
+\end{enumerate}
+
+\subsection*{Even Example}
+n = 6(even), array $A = {2, 5, 3, 7, 1, 4}$
+\begin{enumerate}
+    \item Compare 2 with 5: 2 < 5
+    \item Set min = 2, max = 5
+    \item Compare elements in pairs: \begin{itemize}
+              \item $3 < 7 \implies$ compare 3 with min and 7 with max
+              \item $1 < 4 \implies$ compare 1 with min and 4 with max
+          \end{itemize}
+          We performed $1 + 3(n-2)/2 = 7$ comparisons
+\end{enumerate}
+
+The total \# of comparisons is at most
+
+\begin{equation*}
+    3 \lfloor n / 2 \rfloor
+\end{equation*}
+
+\subsection*{What about the median?}
+\begin{itemize}
+    \item By repeatedly applying the algorihtm for finding min value, it will
+    take $O(n)$ time to find the $i$-th smallest element.
+    \item Therefore, when finding the median, it will take $O(n^2)$ time. This
+    is more than what sorting takes.
+    \item Can we do better?
+\end{itemize}
+
+\subsection*{Reduction to sorting}
+
+\begin{enumerate}
+    \item $O(n \log n)$ algorithm:
+    \item Step 1: apply merge sort
+    \item Return $i$-th element of the array
+\end{enumerate}
+
+Definitely better than finding the median using the min algorithm.
+\textbf{Key Idea}: We can use reduction to sorting to help us with the selection problem
+\end{document}
