@@ -1,0 +1,90 @@
+\documentclass[a4paper,12pt]{article} 
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath, amssymb}
+
+\title{HW1 (Order Statistics)}
+\author{Isaac Boaz (Solo)}
+
+\begin{document}
+
+\maketitle
+
+\noindent Q1: Suppose that RSelect (called RANDOMIZED-SELECT in the textbook) is used to select the minimum element of the array A = \textlangle 2, 3, 0, 5, 7, 9, 1, 8, 6, 4\textrangle. Describe a sequence of partitions that results in a worst-case performance of RANDOMIZED-SELECT.
+
+A worst-case sequence of partitions would be if RANDOMIZED-SELECT were to pick the largest element as the pivot every time.
+
+\begin{enumerate}
+    \item Pivot on 9: \textlangle 2, 3, 0, 5, 7, 1, 8, 6, 4, 9\textrangle
+    \item Pivot on 8: \textlangle 2, 3, 0, 5, 7, 1, 6, 4, 8, 9\textrangle
+    \item Pivot on 7: \textlangle 2, 3, 0, 5, 1, 6, 4, 7, 8, 9\textrangle
+    \item Pivot on 6: \textlangle 2, 3, 0, 5, 1, 4, 6, 7, 8, 9\textrangle
+    \item Pivot on 5: \textlangle 2, 3, 0, 1, 4, 5, 6, 7, 8, 9\textrangle
+    \item Pivot on 4: \textlangle 2, 3, 0, 1, 4, 5, 6, 7, 8, 9\textrangle
+    \item Pivot on 3: \textlangle 2, 0, 1, 3, 4, 5, 6, 7, 8, 9\textrangle
+    \item Pivot on 2: \textlangle 0, 1, 2, 3, 4, 5, 6, 7, 8, 9\textrangle
+    \item Pivot on 1: \textlangle 0, 1, 2, 3, 4, 5, 6, 7, 8, 9\textrangle
+\end{enumerate}
+
+Q2: In the algorithm DSelect (called SELECT in the textbook), the input elements are divided into groups of 5. Will the algorithm work if they are divided into groups of 7? Can this approach still run in O(n)?
+
+Yes, the algorithm will work if they are divided into groups of 7. This approach
+would still retain a \(O(n)\) complexity by the same lemma that applies to the
+group of 5.
+
+To find the recurrenc relation, we first need to find the \# of elements that are \(>\) or \(< m\).
+
+Using the same process we did for groups of 5\dots
+
+\begin{enumerate}
+    \item There are \(\lceil \frac{n}{7} \rceil\) groups in total.
+    \item Of those groups, half \(\left( \frac{1}{2} \times \frac{n}{7} = \frac{n}{14}\right)\) will have their medians less than the pivot.
+    \item Another half will have their medians greater than the pivot.
+    \item There are are 3 elements per group that are less than their respective medians.
+    \item Thus, each group has 4 elements that are less/greater than the pivot.
+    \item Hence, we will pivot on at most \(4 \times \frac{n}{14} = \frac{2n}{7}\)
+    \item Thus, the maximum number of elements remaining after a partition is \(n - \frac{2n}{7} = \frac{5n}{7}\)
+\end{enumerate}
+
+Plugging this in for our recurrence we get:
+\begin{equation*}
+    T(n) = \begin{cases}
+        1                                                           & \text{if } n = 1 \\
+        cn + T\left(\frac{n}{7}\right) + T\left(\frac{5n}{7}\right) & \text{if } n > 1
+    \end{cases}
+\end{equation*}
+
+Let's guess that \(T(n) \leq O(n)\) and prove it by induction.
+
+\begin{description}
+    \item[Base Case] \(T(1) = 1 \leq a \times 1\)
+    \item[Induction Step] Assume \(T(k) \leq a \times k\) for all \(k < n\).
+        \begin{align*}
+            \text{We have }  T(n) & \leq cn + T\left(\frac{n}{7}\right) + T\left(\frac{5n}{7}\right) \\
+                                  & \leq cn + a \times \frac{n}{7} + a \times \frac{5n}{7}           \\
+                                  & = n\left(c + \frac{a}{7} + \frac{5a}{7}\right)                   \\
+                                  & = n\left(c + \frac{6a}{7}\right) = an                            \\
+        \end{align*}
+\end{description}
+
+To verify, let's check our math for groups of 3, which we know is not \(O(n)\).
+
+\begin{enumerate}
+    \item There are \(\lceil \frac{n}{3} \rceil\) groups in total.
+    \item Of those groups, half \(\left( \frac{1}{2} \times \frac{n}{3} = \frac{n}{6}\right)\) will have their medians less than the pivot.
+    \item Another half will have their medians greater than the pivot.
+    \item There are are 1 elements per group that are less than their respective medians.
+    \item Thus, each group has 2 elements that are less/greater than the pivot.
+    \item Hence, we will pivot on at most \(2 \times \frac{n}{6} = \frac{n}{3}\)
+    \item Thus, the maximum number of elements remaining after a partition is \(n - \frac{n}{3} = \frac{2n}{3}\)
+\end{enumerate}
+
+Combining this with the recurrence relation we get:
+\begin{equation*}
+    T(n) = \begin{cases}
+        1                                                           & \text{if } n = 1 \\
+        cn + T\left(\frac{n}{3}\right) + T\left(\frac{2n}{3}\right) & \text{if } n > 1
+    \end{cases}
+\end{equation*}
+
+Since \(\frac{n}{3} + \frac{2n}{3} \geq 1\), this will reduce down to \(O(n \log n)\) in the worst case.
+\end{document}
