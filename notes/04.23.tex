@@ -1,0 +1,100 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+\section*{Properties of Greedy Algorithm}
+Problems that can be solved by greedy algorithms have two main properties:
+\begin{description}
+    \item[Optimal Substructure] The optimal solution to the problem contains within it optimal solutions to subproblems.
+    \item[Greedy Choice Property] A global optimal solution can be arrived at by selecting a local optimal solution.
+\end{description}
+
+Difference from DP: No overalapping subproblems.
+
+\section*{Activity Selection Problem}
+
+\begin{description}
+    \item[Input] Set \(S\) of \(n\) activities \(a_1, a_2, \ldots, a_n\).
+        \begin{itemize}
+            \item \(s_i\) = start time of activity \(i\)
+            \item \(f_i\) = finish time of activity \(i\)
+        \end{itemize}
+    \item[Output] Subset \(A\) of maximum number of compatible activities.
+\end{description}
+Two activities are compatible if they do not overlap.
+
+\begin{tabular}{c|ccccccccc}
+    i       & 1 & 2 & 3 & 4 & 5 & 6  & 7  & 8  & 9  \\
+    \hline
+    \(s_i\) & 1 & 2 & 4 & 1 & 5 & 8  & 9  & 11 & 13 \\
+    \(f_i\) & 3 & 5 & 7 & 8 & 9 & 10 & 11 & 14 & 16 \\
+\end{tabular}
+
+Assume activites are sorted by finishing times.
+\begin{equation*}
+    f_1 \leq f_2 \leq \ldots \leq f_n
+\end{equation*}
+
+Suppose an optimal solution includes activity \(a_k\).
+
+\begin{itemize}
+    \item This generates two subproblems
+          \begin{itemize}
+              \item Selecting from \(a_1, \ldots, a_{k-1}\) activites compatible with one another, and that finish before \(a_k\) starts (compatible with \(a_k\))
+              \item Selecting from \(a_{k+1}, \ldots, a_n\) activites compatible with one another, and that start after \(a_k\) finishes.
+          \end{itemize}
+    \item The solutions to the two subproblems must be optimal.
+          \begin{itemize}
+              \item Prove using the cut-and-paste approach.
+          \end{itemize}
+\end{itemize}
+
+\subsection*{Optimal Substructure}
+\begin{equation*}
+    S_{ij} = \text{ subset of activites in } S \text{ that start after } a_i \text{ finishes and finish before } a_j \text{ starts}
+\end{equation*}
+
+\begin{align*}
+    \text{Let } A_{ik} & = A_{ij} \cap S_{ik} \text{ and } A_{kj} = A_{ij} \cap S_{kj} \\
+    A_{ij}             & = A_{ik} \cup \{a_k\} \cup A_{kj}                             \\
+    \vert A_{ij} \vert & = \vert A_{ik} \vert + \vert A_{kj} \vert + 1
+\end{align*}
+
+\begin{equation*}
+    c[i, j] = \text{ size of max-size subset of mutually compatible activites in } S_{ij}
+\end{equation*}
+
+\begin{equation*}
+    \parbox{5em}{Recursive\\Solution} c[i, j] = \begin{cases}
+        0                                                        & \text{if } S_{ij} = \emptyset    \\
+        % \max\{c[i, k] + c[k, j] + 1\}                            & \text{if } S_{ij} \neq \emptyset \\
+        \underset{a_k \in S_{ij}}{\max}\{c[i, k] + c[k, j] + 1\} & \text{if } S_{ij} \neq \emptyset
+    \end{cases}
+\end{equation*}
+
+After you choose \(a_k\), the subproblem focuses on the set of
+\begin{equation*}
+    S_k = \{ a_i \in S : s_i \geq f_k\}
+\end{equation*}
+
+\textbf{Theorem}
+If \(S_k\) is nonempty and \(a_m\) has the earliest finish time in \(S_k\), then
+\(a_m\) is included in some optimal solution.
+
+\textbf{Proof} Let \(A_k\) be an optimal solution to \(S_k\), and let \(a_j\)
+have the earliest finish time of any activity in \(A_k\). If \(a_j = a_m\),
+done. Otherwise, let \(A_k' = A_k - \{ a_j \} \cup \{ a_m \}\) be \(A_k\) but
+with \(a_m\) substituted for \(a_j\).
+
+\begin{verbatim}
+Recursive-Activity-Selector(s, f, k, n)
+    m = k + 1
+    while m <= n and s[m] < f[k]
+        m = m + 1
+    if m <= n
+        return {m} U Recursive-Activity-Selector(s, f, m, n)
+    else
+        return {}
+\end{verbatim}
+\end{document}

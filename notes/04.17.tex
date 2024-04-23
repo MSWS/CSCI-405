@@ -1,0 +1,93 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{forest}
+\usepackage{multicol}
+
+\begin{document}
+\section*{Optimal Binary Search Trees}
+
+\begin{multicols}{2}
+    \begin{minipage}{\columnwidth}
+        \begin{center}
+            \begin{forest}
+                [
+                    \(k_2\)
+                    [\(k_1\)]
+                        [\(k_5\)
+                            [\(k_4\)
+                                    [
+                                            \(k_3\)
+                                        ]
+                                        [,phantom]
+                                ]
+                                [,phantom]
+                        ]
+                ]
+            \end{forest}
+        \end{center}
+    \end{minipage}
+    \columnbreak
+    \begin{tabular}{ccc}
+        \(i\) & \(\text{depth}_T(k_i)\) & \(\text{depth}_T(k_i)\cdot p_i\) \\
+        \hline
+        1     & 1                       & 0.25                             \\
+        1     & 0                       & 0                                \\
+        3     & 2                       & 0.1                              \\
+        4     & 1                       & 0.2                              \\
+        5     & 2                       & 0.3                              \\
+        \hline
+              &                         & 1.10
+    \end{tabular}
+\end{multicols}
+
+\begin{equation*}
+    \text{Therefore, } E[\text{search cost}] = 2.10
+\end{equation*}
+
+\subsection*{Observerations}
+\begin{itemize}
+    \item Optimal BST may not have smallest height
+    \item Optimal BST may not have highest-probability key at root
+\end{itemize}
+
+For each, assign keys and compute expected search cost.
+But there are \(\Omega(\frac{4^n}{3^{3/2}})\) different BSTs with \(n\) nodes.
+
+\subsection*{Optimal Substructure}
+\begin{itemize}
+    \item Any subtree of a BST contains key in a contiguous range \(k_i, \ldots,
+          k_j\) for some \(1 \leq i \leq j \leq n\).
+    \item If \(T\) is an optimal BST and \(T\) contains subtree \(T'\) with keys
+          \(k_i, \ldots, k_j\), then \(T'\) must be an optimal BST for keys \(k_i,
+          \ldots, k_j\).
+\end{itemize}
+
+To find an optimal BST:
+\begin{enumerate}
+    \item Examine all candidate roots \(k_r, \text{ for } i \leq r \leq j\)
+    \item Determine all optimal BSTs containing \(k_i, \ldots, k_{r-1}\) and
+          containing \(k_{r+1}, \ldots, k_j\)
+\end{enumerate}
+
+When optimal subtree becomes a subtree of a node:
+\begin{enumerate}
+    \item Depth of every node in OPT subtree goes up by 1
+    \item Expected search cost increases by \[w(i, j) = \sum_{l=i}^{j}p_l\]
+\end{enumerate}
+
+If \(k_r\) is the root of an optimal BST for \(k_i, \ldots, k_j\):
+\begin{align*}
+    e[i, j] & = p_r + \left(e[i, r-1] + w(i, r-1)\right) + (e[r+1, j] + w(r+1, j))       \\
+            & = e[i, r-1] + e[r+1, j] + w(i, j)                                          \\
+            & \qquad (\text{\footnotesize because \(w(i, j) = w(i, r-1) + p_r + w(r + 1, j)\)})
+\end{align*}
+
+But, we don't know \(k_r\). Hence,
+\begin{equation*}
+    e[i, j] = \begin{cases}
+        0                                                                                       & \text{ if } j = i -1 \\
+        \underbrace{\text{min}}_{i \leq r \leq j}\left\{e[i, r-1] + e[r+1, j] + w(i, j)\right\} & \text{ if } i \leq j
+    \end{cases}
+\end{equation*}
+\end{document}
