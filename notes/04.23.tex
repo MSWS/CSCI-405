@@ -6,8 +6,10 @@
 \section*{Properties of Greedy Algorithm}
 Problems that can be solved by greedy algorithms have two main properties:
 \begin{description}
-    \item[Optimal Substructure] The optimal solution to the problem contains within it optimal solutions to subproblems.
-    \item[Greedy Choice Property] A global optimal solution can be arrived at by selecting a local optimal solution.
+    \item[Optimal Substructure] The optimal solution to the problem contains
+        within it optimal solutions to subproblems.
+    \item[Greedy Choice Property] A global optimal solution can be arrived at by
+        selecting a local optimal solution.
 \end{description}
 
 Difference from DP: No overalapping subproblems.
@@ -41,8 +43,11 @@ Suppose an optimal solution includes activity \(a_k\).
 \begin{itemize}
     \item This generates two subproblems
           \begin{itemize}
-              \item Selecting from \(a_1, \ldots, a_{k-1}\) activites compatible with one another, and that finish before \(a_k\) starts (compatible with \(a_k\))
-              \item Selecting from \(a_{k+1}, \ldots, a_n\) activites compatible with one another, and that start after \(a_k\) finishes.
+              \item Selecting from \(a_1, \ldots, a_{k-1}\) activites compatible
+                    with one another, and that finish before \(a_k\) starts
+                    (compatible with \(a_k\))
+              \item Selecting from \(a_{k+1}, \ldots, a_n\) activites compatible
+                    with one another, and that start after \(a_k\) finishes.
           \end{itemize}
     \item The solutions to the two subproblems must be optimal.
           \begin{itemize}
@@ -97,4 +102,16 @@ Recursive-Activity-Selector(s, f, k, n)
     else
         return {}
 \end{verbatim}
+
+\subsection*{Typical Steps of Greedy Algorithm}
+\begin{itemize}
+    \item Cast the optimization problem as one in which we make a (greedy)
+          choice and are left with one subproblem to solve.
+    \item Prove that there's always an optimal solution to the original problem
+          that makes the greedy choice, so that the greedy choice is always
+          safe.
+    \item Show that greedy choice and optimal solution to the subproblem
+          \(\Rightarrow\) optimal solution to the problem.
+    \item Make the greedy choice and solve \emph{top-down}.
+\end{itemize}
 \end{document}
