@@ -1,0 +1,61 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{tabularx}
+\usepackage{forest}
+
+\begin{document}
+What's the similarity and difference of DP and Greedy?
+
+\begin{tabularx}{\textwidth}{|X|X|}
+    DP                                                                       & Greedy                                               \\
+    \hline
+    Used to solve optimizaiton                                               & Used to solve optimization                           \\
+    Have optimal substructure                                                & Have optimal substructure                            \\
+    Make an `informed choice' after getting optimal solutions to subproblems & Make a `greedy choice' before solving the subproblem \\
+    Bottom-up                                                                & Top-down                                             \\
+    Dependent or overlapping subproblems                                     & Each round selects only one subporblem               \\
+                                                                             & The subproblem size decreases                        \\
+                                                                             & No overlapping subproblem
+\end{tabularx}
+
+\begin{forest}
+    [ Big Problem
+    [sub-problem
+    [sub-problem]
+    [sub-problem]
+    [sub-problem]]
+    [sub-problem
+    [sub-problem]
+    [sub-problem]
+    [sub-problem]]
+    ]
+\end{forest}
+
+\begin{forest}
+    [Big Problem
+    [sub-problem
+    [sub-problem]
+    ]
+    ]
+\end{forest}
+
+\subsection*{Greedy Choice Property}
+
+Show that it exists an optimal solution that `contains' the greedy choice using the \emph{`exchange argument'}
+
+For any optimal solution OPT, the greedy choice \(g\) has two cases:
+\begin{enumerate}
+    \item \(g\) is in OPT
+    \item \(g\) is not in OPT: modify OPT into OPT' s.t. OPT' contains \(g\) and is at least as good as OPT
+\end{enumerate}
+
+\subsection*{Knapsack Substructure}
+\begin{equation*}
+    c[i, w] = \begin{cases}
+        0                                        & \text{if } i = 0 \text{ or } w = 0,      \\
+        c[i - 1, w]                              & \text{if } w_i > w,                      \\
+        \max(v_i + c[i - 1, w-w_i], c[i - 1, w]) & \text{if } i > 0 \text{ and } w \geq w_i
+    \end{cases}
+\end{equation*}
+\end{document}
