@@ -26,4 +26,11 @@ DFS can be used in additional algorithms.
     \item \(BFS(G, s)\) is usually for finding shortest path distances from a given source.
 \end{itemize}
 
+\subsection*{Classification of Edges}
+\begin{description}
+    \item[Tree Edge] In the depth-first forest. Found by exploring \((u, v)\)
+    \item[Back Edge] \((u, v)\), where \(u\) is a descendant of \(v\) (in dft)
+    \item[Forward Edge] \((u, v)\) where \(v\) is a descendant of \(u\) but not a tree edge
+    \item[Cross Edge] any other edge
+\end{description}
 \end{document}
