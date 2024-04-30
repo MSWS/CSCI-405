@@ -1,0 +1,29 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+\section*{DFS: Specification}
+
+\begin{description}
+    \item[Input]  Directed or undirected graph \(G = (V, E)\)
+    \item[Output] For each \(v\), keep two timestamps and the predecessor:
+        \begin{itemize}
+            \item \(v.d\) = discovery time
+            \item \(v.f\) = finishing time
+            \item \(v.\pi\) = predecessor of \(v\) in the depth-first `forest'
+        \end{itemize}
+\end{description}
+
+BFS gives us a shortest-path.
+DFS can be used in additional algorithms.
+
+
+\subsection*{Depth-First Forest and Breadth-First Tree}
+\begin{itemize}
+    \item \(DFS(G)\) is usually for finding relationship among verticies (timestamps), not the relationship w.r.t a particlar source \\
+          Use \(DFS(G, s)\) as a subroutine
+    \item \(BFS(G, s)\) is usually for finding shortest path distances from a given source.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,38 @@
+\documentclass{article}
+
+\begin{document}
+\section*{Time Complexity}
+
+\subsection*{Adjacency Lists}
+
+\subsubsection*{Pros}
+\begin{itemize}
+    \item Space-efficient when a graph is sparse
+    \item Can be modified to support many graph variants
+\end{itemize}
+\begin{itemize}
+    \item
+\end{itemize}
+
+\subsection*{Complexity}
+\begin{description}
+    \item[Space]  \(\Theta(V^2)\)
+    \item[Time] \(\Theta(1)\)
+\end{description}
+\noindent
+Checking if an edge \((u, v) \in G\) takes \(\Theta(1)\) \\
+Listing all neighbors of a vertex takes \(\Theta(V)\) \\
+Listing all edges takes \(\Theta(V^2)\)
+
+\begin{tabular}{c|c|c|c|c}
+                     & Space             & Edge Check       & List all neighbors    & List all edges    \\
+    \hline
+    Adjacency List   & \(\Theta(E + V)\) & \(O(degree(u))\) & \(\Theta(degree(u))\) & \(\Theta(E + V)\) \\
+    Adjacency Matrix & \(\Theta(V^2)\)   & \(\Theta(1)\)    & \(\Theta(V)\)         & \(\Theta(V^2)\)
+\end{tabular}
+
+Adjancy list representation is suited to spares graphs \((E << V^2)\) \\
+Adjacency matrix representation is suited to dense graphs \(E \approx V^2\)
+
+
+\end{document}
