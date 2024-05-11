@@ -1,0 +1,43 @@
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+Shortest path has optimal substructure.
+
+\begin{equation*}
+    \delta(a, b) = \min(\delta(a, c) + w(c, b), \delta(a, d) + w(d, b))
+\end{equation*}
+
+Given a weighted, directed graph G = (V, E) and a source vertex s in V, find the
+min cost path from so to every vertex in V.
+
+\begin{itemize}
+    \item Bellman-Ford
+    \begin{itemize}
+        \item DP
+        \item General case, edge weights may be negative
+    \end{itemize}
+    \item Djiikstra
+    \begin{itemize}
+        \item Greedy
+        \item Edge weights must be non-negative
+    \end{itemize}
+\end{itemize}
+
+Relaxation: Given a vertex v, a vertex u, and an edge (u, v), we can relax v by
+
+\begin{verbatim}
+Relax(u, v)
+    if v.d > u.d + w(u, v)
+        v.d = u.d + w(u, v)
+        v.pi = u
+\end{verbatim}
+
+Proof by induction on relaxing the ith edge \((v_{i-1}, v_i)\) on p
+
+Let \(w_I = \sum_{1}^{i} w(v_{i=1}, v_i)\). \(W_i\) is the shortest path weights
+\(\delta(s, v_i)\) because of optimal substructure
+
+
+\end{document}

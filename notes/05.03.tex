@@ -1,0 +1,15 @@
+\documentclass{article}
+
+\usepackage{geometry}[margin=1in]
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+\textbf{Theorem} The algorithm produces a topological sort of the input DAG.
+[Just need to show if \((u, v) \in E\)], then \(v.f < u.f\)]
+
+When \((u, v)\) is explored, \(u\) is gray.
+
+\(v\) is not gray. If it were, then \((u, v)\) would be back edge and contract with the lemma.
+
+
+\end{document}
