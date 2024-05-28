@@ -1,0 +1,79 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\doublespacing                    
+
+\begin{document}
+
+\title{Stochastic Parrots}
+\author{Isaac Boaz}
+\maketitle
+
+\begin{abstract}
+    This paper will introduce the concepts and ideas that the paper (the paper)
+    `On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?' by
+    Emily M. Bender and Timnit Gebru.
+\end{abstract}
+
+For its introduction, the paper poses its core question: \textbf{How big is too
+    big?} This isn't actually a question of the size of the model, but rather
+challenging the downsides (both direct and indirect) of language models (LMs),
+and how these downsides may disproportionately scale with the size of the model.
+
+\begin{singlespace}
+    The paper introduces the following key points:
+    \begin{itemize}
+        \item The environmental impact of LMs
+        \item The disproprotionate benefit LMs offer to marginalized communities
+        \item The source of the data used to train LMs
+        \item The documentation of training data
+        \item The understanding of the limitations of LMs
+    \end{itemize}
+\end{singlespace}
+
+\section*{Background}
+The paper briefly covers the history of LMs, pointing out that they were
+`proposed by Shannon in 1949', with the earliest implemented ones dating back to
+the 1980s. The paper points out how historic models didn't necessarily perform better
+when increasing the number of model parameters, and that we only saw this trend
+occur with transformer models (in contrast to n-gram ones).
+
+\section*{Cost}
+The paper goes on to discuss the environmental impact of LMs, particularly with
+the increased size of transformer models. Specifically, the paper reports that
+training a large LM model emitted 284t of CO\textsubscript{2}.
+
+The paper also mentions how while some of the energy used to train these models
+may be renewable, it points out
+
+\begin{quote}
+    renewable energy sources are still costly to the environment, and data
+    centers with increasing computation requirements take away from other
+    potential uses of green energy.
+\end{quote}
+
+The paper then points out that though this cost generally impacts the global
+population, the benefit is primarily towards the privileged few. In short, the
+paper proses `These models are being developed at a time when unprecedented
+environmental changes are being witnessed around the world'.
+
+\section*{Training Data}
+Revisiting the source of the data used to train LMs, the paper fleshes out the
+issues relating to ``stereotypical and derogatory assocations along gender,
+race, ethnicity, and disability status''. The issue relies on who has access
+to the internet, and who takes the time to contribute to the data. As a result,
+the paper explains, white supremacy, misogyny, ageism, etc. are `overrepresented'
+in the training data. 
+
+In short, the paper argues that the sourcing, maintenance, and updating of the data
+is misrepresentative of the world's population.
+
+\section*{Parroting}
+The idea of `parroting' is introduced as the idea that LMs generally ``amplify
+biases and other issues in the training data''. The metrics used to measure
+the success of LMs is tightly coupled with this issue.
+\end{document}
