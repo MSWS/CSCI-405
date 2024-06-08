@@ -186,6 +186,7 @@
 
     \subsection*{DFS}
     \includegraphics[width=\linewidth]{dfs.png}
+    \vspace{-3em}
     \begin{equation*}
         \left(q\left[s\{v(ww)v\}s\right][t\{x(zz)x\}yyt]q\right)(r[uu]r)
     \end{equation*}
@@ -201,6 +202,15 @@
             same depth-first tree, as long as one vertex is not an ancestor of the
             other, or they can go between verticies in different depth-first trees.
     \end{description}
+
+    \subsection*{Knapsack}
+    \begin{equation*}
+        c[i, w] = \begin{cases}
+            0                                    & \text{if } i = 0 \text{ or } w = 0       \\
+            c[i-1, w]                            & \text{if } w_i > w                       \\
+            \max(c[i-1, w], c[i-1, w-w_i] + v_i) & \text{if } i > 0 \text{ and } w \geq w_i
+        \end{cases}
+    \end{equation*}
 
     \subsection*{Graphs}
     \subsubsection*{Handshaking Lemma}
@@ -219,22 +229,26 @@
     \subsection*{Djikstra}
     Execute Djikstra's algorithm on the graph below starting at A. If there are
     ties, the vertex with the lowest letter comes first.
-    \includegraphics[width=0.5\columnwidth]{djikstra.png}
-    \begin{tabular}{ccccccc}
-        A: 0          & D: 3          & B: 4          & G: 4          & C: 6 &
-        E: 6          & F: 7                                                   \\
-        B: \(\infty\) & B: 4          & G: 4          & C: 6          & E: 6 &
-        F: 7                                                                   \\
-        C: \(\infty\) & C: \(\infty\) & E: 8          & E:6           & F: 7
-        \\
-        D: \(\infty\) & E: \(\infty\) & C: \(\infty\) & F: \(\infty\)
-        \\
-        E: \(\infty\) & F: \(\infty\) & F: \(\infty\)
-        \\
-        F: \(\infty\) & G: \(\infty\)
-        \\
-        G: \(\infty\)
-    \end{tabular}
+    \vspace{-3em}
+    \begin{multicols*}{2}
+        \includegraphics[width=\columnwidth]{djikstra.png}
+        \begin{tabular}{ccccccc}
+            A: 0          & D: 3          & B: 4          & G: 4          & C: 6 &
+            E: 6          & F: 7                                                   \\
+            B: \(\infty\) & B: 4          & G: 4          & C: 6          & E: 6 &
+            F: 7                                                                   \\
+            C: \(\infty\) & C: \(\infty\) & E: 8          & E:6           & F: 7
+            \\
+            D: \(\infty\) & E: \(\infty\) & C: \(\infty\) & F: \(\infty\)
+            \\
+            E: \(\infty\) & F: \(\infty\) & F: \(\infty\)
+            \\
+            F: \(\infty\) & G: \(\infty\)
+            \\
+            G: \(\infty\)
+        \end{tabular}
+
+    \end{multicols*}
     \columnbreak
     \subsection*{Floyd-Warshall}
     Execute the Floyd-Warshall algorithm on the graph below, provide the \(D^k\)
@@ -333,5 +347,116 @@
             \max(c[i-1, w], c[i-1, w-w_i] + v_i) & \text{otherwise}
         \end{cases}
     \end{equation*}
+
+    \includegraphics[width=\linewidth]{paths.png}
+
+    \section*{Bellman-Ford}
+    Bellman-Ford is a single source shortest path algorithm that determines the
+    shortest path between a given source vertex and every other vertex in a
+    graph. This algorithm can be used on both weighted and unweighted graphs.
+
+    \includegraphics[width=\linewidth]{bellman.png}
+
+    \begin{multicols*}{2}
+        \begin{enumerate}
+            \item Initialize distance array to store shortest dist for each
+                  vertex. Initialize source as 0, and all others to be \(\infty\).
+            \item Relax all edges \(|V| - 1\) times.
+            \item Relax all edges one more time to detect negative cycles.
+                  \begin{description}
+                      \item[Case 1] For any edge(u, v, weight), if dist[u] + weight < dist[v],
+                          then there is a negative cycle.
+                      \item[Case 2] Case 1 fails for all edges
+                  \end{description}
+        \end{enumerate}
+        \columnbreak
+        \begin{align*}
+            \begin{array}{|c|c|c|c|c|c|}
+                \hline
+                A & B      & C      & D      & E      & F      \\
+                \hline
+                0 & \infty & \infty & \infty & \infty & \infty \\
+                \hline
+                0 & 5      & \infty & \infty & \infty & \infty \\
+                \hline
+                0 & 5      & 6      & 7      & \infty & \infty \\
+                \hline
+                0 & 5      & 6      & 7      & 7      & 9      \\
+                \hline
+                0 & 5      & 6      & 6      & 6      & 9      \\
+                \hline
+                0 & 5      & 6      & 5      & 6      & 8      \\
+                \hline
+            \end{array}
+        \end{align*}
+    \end{multicols*}
+    \begin{enumerate}
+        \item Start relaxing edges, 1st relaxation:
+              \begin{align*}
+                  Dist(B) & > Dist(A) + w(A, B)             \\
+                  \infty  & > 0 + 5 \Rightarrow Dist(B) = 5
+              \end{align*}
+        \item 2nd relaxation:
+              \begin{align*}
+                  Dist(D) > Dist(B) + w(B, D) \\
+                  \infty > 5 + 2 \Rightarrow Dist(D) = 7
+              \end{align*}
+              \begin{align*}
+                  Dist(C) > Dist(B) + w(B, C) \\
+                  \infty > 5 + 1 \Rightarrow Dist(C) = 6
+              \end{align*}
+        \item 3rd relaxation:
+              \begin{align*}
+                  Dist(F) > Dist(D) + w(D, F) \\
+                  \infty > 7 + 2 \Rightarrow Dist(F) = 9
+              \end{align*}
+              \begin{align*}
+                  Dist(E) > Dist(C) + w(C, E) \\
+                  \infty > 6 + 1 \Rightarrow Dist(E) = 7
+              \end{align*}
+        \item 4th relaxation:
+              \begin{align*}
+                  Dist(D) > Dist(E) + w(E, D) \\
+                  7 > 7 + (-1) \Rightarrow Dist(D) = 6
+              \end{align*}
+              \begin{align*}
+                  Dist(E) > Dist(F) + w(F, E) \\
+                  7 > 9 + (-3) \Rightarrow Dist(E) = 6
+              \end{align*}
+        \item 5th relaxation:
+              \begin{align*}
+                  Dist(F) > Dist(D) + w(D, F) \\
+                  9 > 6 + 2 \Rightarrow Dist(F) = 8
+              \end{align*}
+              \begin{align*}
+                  Dist(D) > Dist(E) + w(E, D) \\
+                  6 > 6 + (-1) \Rightarrow Dist(D) = 6
+              \end{align*}
+        \item 6th relaxation (final):
+              \begin{align*}
+                  Dist(E) > Dist(F) + w(F, E) \\
+                  6 > 8 + (-3) \Rightarrow Dist(E) = 5
+              \end{align*}
+              \begin{align*}
+                  Dist(F) > Dist(D) + w(D, F) \\
+                  8 > 5 + 2 \Rightarrow Dist(F) = 7
+              \end{align*}
+    \end{enumerate}
+\end{multicols*}
+
+\begin{multicols*}{2}
+    \subsection*{Network Flow}
+    \begin{description}
+        \item[Flow] Amount of material that can be transported between two nodes.
+        \item[Capacity] Maximum amount of material that can be transported between
+            two nodes.
+        \item[Residual Capacity] Amount of material that can still be transported
+            between two nodes.
+        \item[Augmenting Path] Path from source to sink where all edges have
+            residual capacity.
+        \item[Residual Graph] Graph where edges have residual capacity.
+    \end{description}
+    \columnbreak
+    \includegraphics[width=\linewidth]{residual.png}
 \end{multicols*}
 \end{document}
